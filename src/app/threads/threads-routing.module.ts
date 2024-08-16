@@ -4,16 +4,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { ThreadsComponent } from './threads.component';
 import { ThreadDetailComponent } from './thread-detail/thread-detail.component';
 import { ThreadEditComponent } from './thread-edit/thread-edit.component';
+import { ThreadListComponent } from './thread-list/thread-list.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: ThreadsComponent,
-    children: [
-        { path: ':id', component: ThreadDetailComponent },
-        { path: ':id/edit', component: ThreadEditComponent }
-    ],
-  },
+  { path: 'threads', component: ThreadListComponent },
+  { path: 'threads/:id', component: ThreadDetailComponent },
+  { path: 'threads/:id/edit', component: ThreadEditComponent },
 ];
 
 @NgModule({

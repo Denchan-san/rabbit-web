@@ -6,6 +6,9 @@
 <hr>
 <div class="row">
     <div class="col-xs-12">
-        <app-thread-item></app-thread-item>
+        <app-thread-item
+        *ngFor="let threadElement of threads; let i = id"
+        [thread]="threadElement"
+        [id]="i"></app-thread-item>
     </div>
 </div>

@@ -5,6 +5,7 @@ import { ThreadListComponent } from "./thread-list/thread-list.component";
 import { ThreadItemComponent } from "./thread-list/thread-item/thread-item.component";
 import { ThreadDetailComponent } from './thread-detail/thread-detail.component';
 import { ThreadEditComponent } from './thread-edit/thread-edit.component';
+import { RouterModule } from "@angular/router";
 
 @NgModule({
     declarations: [
@@ -14,6 +15,8 @@ import { ThreadEditComponent } from './thread-edit/thread-edit.component';
         ThreadDetailComponent,
         ThreadEditComponent
     ],
-    imports: []
+    imports: [
+        RouterModule
+    ]
 })
 export class ThreadsModule {}
