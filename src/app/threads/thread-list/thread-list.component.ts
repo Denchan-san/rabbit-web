@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';
+
 import { Thread } from '../thread.model';
 import { ThreadService } from '../thread.service';
 
@@ -20,18 +21,18 @@ export class ThreadListComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit(){
-    this.subscription = this.threadService.threadsChanged
-    .subscribe(
+  ngOnInit() {
+    this.subscription = this.threadService.threadsChanged.subscribe(
       (threads: Thread[]) => {
         this.threads = threads;
       }
     );
     this.threads = this.threadService.getThreads();
-    console.log("object");
   }
 
-  onNewThread() {}
+  onNewThread() {
+    this.router.navigate(['new'], { relativeTo: this.route });
+  }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();

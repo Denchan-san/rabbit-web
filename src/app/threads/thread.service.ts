@@ -19,7 +19,7 @@ export class ThreadService {
     ),
     new Thread(
       1,
-      'My First Thread',
+      'My Second Thread',
       'Check it out!',
       new Date(),
       new Date(),
