@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrl: './post-list.component.css'
 })
 export class PostListComponent {
-
+  
 }
