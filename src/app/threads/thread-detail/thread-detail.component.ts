@@ -23,6 +23,5 @@ export class ThreadDetailComponent implements OnInit {
       this.id = +params['id'];
       this.thread = this.threadService.getThread(this.id);
     });
-    console.log('HI FROM EDIT');
   }
 }

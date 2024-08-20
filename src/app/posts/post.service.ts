@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 
 import { Post } from './post.model';
 
-Injectable({ providedIn: 'root' });
+@Injectable({ providedIn: 'root' })
 export class PostService {
   postsChanged = new Subject<Post[]>();
   private posts: Post[] = [
@@ -28,8 +28,8 @@ export class PostService {
     ),
   ];
 
-  getPosts() {
-    return this.posts.slice();
+  getPostsWithThreadId(threadId: number) {
+    return this.posts.slice().filter(post => post.threadId === threadId);
   }
 
   getPost(id: number) {

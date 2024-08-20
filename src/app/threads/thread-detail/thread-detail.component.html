@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-xs-12">
+    <img
+      [src]="thread.imageUrl"
+      alt="{{ thread.title }}"
+      class="img-responsive"
+      style="max-height: 300px; max-width: 300px"
+    />
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <h1>{{ thread.title }}</h1>
+  </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <ul class="list-group">
+            <app-post-list [threadId]="thread.id"></app-post-list>
+        </ul>
+    </div>
+</div>

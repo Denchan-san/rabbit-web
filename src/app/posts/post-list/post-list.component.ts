@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';
@@ -12,6 +12,7 @@ import { PostService } from '../post.service';
   styleUrl: './post-list.component.css',
 })
 export class PostListComponent implements OnInit, OnDestroy {
+  @Input() threadId: number;
   posts: Post[] = [];
   subscription: Subscription;
 
@@ -27,7 +28,7 @@ export class PostListComponent implements OnInit, OnDestroy {
         this.posts = posts;
       }
     );
-    this.posts = this.postService.getPosts();
+    this.posts = this.postService.getPostsWithThreadId(this.threadId);
   }
 
   onNewPost() {

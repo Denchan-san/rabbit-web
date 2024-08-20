@@ -1,1 +1,14 @@
-<p>post-list works!</p>
+<div class="row">
+    <div class="col-xs-12">
+        <button class="btn btn-success" (click)="onNewPost()">New Post</button>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-xs-12" style="text-align: center;">
+        <app-post-item
+        *ngFor="let postElement of posts; let i = id"
+        [post]="postElement"
+        [id]="i"></app-post-item>
+    </div>
+</div>

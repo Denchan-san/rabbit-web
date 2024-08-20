@@ -1,1 +1,11 @@
-<p>post-item works!</p>
+<a
+  style="cursor: pointer"
+  [routerLink]="[post.id]" 
+  routerLinkActive="active"
+  class="list-group-item clearfix"
+>
+  <div class="pull-left">
+    <p class="list-group-item-heading">{{post.title}}</p>
+    <p class="list-group-item-text">{{post.description.slice(0, 15)}}</p>
+  </div>
+</a>

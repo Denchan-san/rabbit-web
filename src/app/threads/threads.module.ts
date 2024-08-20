@@ -1,13 +1,14 @@
 import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { RouterModule } from "@angular/router";
 
 import { ThreadsComponent } from "./threads.component";
 import { ThreadListComponent } from "./thread-list/thread-list.component";
 import { ThreadItemComponent } from "./thread-list/thread-item/thread-item.component";
 import { ThreadDetailComponent } from './thread-detail/thread-detail.component';
 import { ThreadEditComponent } from './thread-edit/thread-edit.component';
-import { RouterModule } from "@angular/router";
-import { CommonModule } from "@angular/common";
 import { ThreadsRoutingModule } from "./threads-routing.module";
+import { PostsModule } from "../posts/posts.module";
 
 @NgModule({
     declarations: [
@@ -20,7 +21,9 @@ import { ThreadsRoutingModule } from "./threads-routing.module";
     imports: [
         RouterModule,
         CommonModule,
-        ThreadsRoutingModule
-    ]
+        ThreadsRoutingModule,
+        PostsModule
+    ],
+
 })
 export class ThreadsModule {}
