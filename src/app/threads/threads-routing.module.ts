@@ -7,8 +7,9 @@ import { ThreadListComponent } from './thread-list/thread-list.component';
 
 const routes: Routes = [
   { path: 'threads', component: ThreadListComponent },
+  { path: 'threads/new', component: ThreadEditComponent },
   { path: 'threads/:id', component: ThreadDetailComponent },
-  { path: 'threads:id/edit', component: ThreadEditComponent },
+  { path: 'threads/:id/edit', component: ThreadEditComponent },
 ];
 
 @NgModule({

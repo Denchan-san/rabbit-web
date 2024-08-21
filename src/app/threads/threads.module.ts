@@ -9,6 +9,7 @@ import { ThreadDetailComponent } from './thread-detail/thread-detail.component';
 import { ThreadEditComponent } from './thread-edit/thread-edit.component';
 import { ThreadsRoutingModule } from "./threads-routing.module";
 import { PostsModule } from "../posts/posts.module";
+import { ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
     declarations: [
@@ -22,7 +23,8 @@ import { PostsModule } from "../posts/posts.module";
         RouterModule,
         CommonModule,
         ThreadsRoutingModule,
-        PostsModule
+        PostsModule,
+        ReactiveFormsModule
     ],
 
 })
