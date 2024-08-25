@@ -35,4 +35,14 @@ export class ThreadService {
   getThread(id: number) {
     return this.threads[id];
   }
+
+  updateThread(id: number, newThread: Thread) {
+    this.threads[id] = newThread;
+    this.threadsChanged.next(this.threads.slice());
+  }
+
+  addThread(newThread: Thread) {
+    this.threads.push(newThread);
+    this.threadsChanged.next(this.threads.slice());
+  }
 }
