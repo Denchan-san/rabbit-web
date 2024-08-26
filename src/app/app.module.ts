@@ -6,9 +6,10 @@ import { HeaderComponent } from './header/header.component';
 import { ThreadsModule } from './threads/threads.module';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
+import { AuthComponent } from './auth/auth.component';
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent],
+  declarations: [AppComponent, HeaderComponent, AuthComponent],
   imports: [
     ThreadsModule,
     BrowserModule,
