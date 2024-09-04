@@ -14,7 +14,7 @@ export class ThreadService {
       'Share All of Your Love Stories Here!',
       new Date(),
       new Date(),
-      'https://t3.ftcdn.net/jpg/00/32/70/20/240_F_32702092_EpL9qwDnKyMn0AIK5dTB3PNzWti6dGRh.jpg',
+      'https://images.vogue.it/users/my/avatar/milienaabuladze.png?v=1724065438',
       0
     ),
     new Thread(
