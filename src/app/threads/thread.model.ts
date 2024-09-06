@@ -1,28 +1,25 @@
 export class Thread {
-    public id: number;
+    public id: string;
     public title: string;
     public description: string;
     public imageUrl?: string;
+    public user?: any;
     public userId?: number;
-    public createdDate: Date;
-    public updatedDate: Date;
   
     constructor(
-      id: number,
+      id: string,
       title: string,
       description: string,
-      createdDate: Date,
-      updatedDate: Date,
       imageUrl?: string,
+      user?: any,
       userId?: number
     ) {
       this.id = id;
       this.title = title;
       this.description = description;
       this.imageUrl = imageUrl;
+      this.user = user;
       this.userId = userId;
-      this.createdDate = createdDate;
-      this.updatedDate = updatedDate;
     }
   }
   

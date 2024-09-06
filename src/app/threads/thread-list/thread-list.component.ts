@@ -22,6 +22,11 @@ export class ThreadListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    const threadSubscription = this.threadService.fetchThreads().subscribe(
+      (threads) => this.threads = threads,
+      (error) => console.error('Error fetching threads', error)
+    );
+    this.subscription.add(threadSubscription);
     this.subscription = this.threadService.threadsChanged.subscribe(
       (threads: Thread[]) => {
         this.threads = threads;
