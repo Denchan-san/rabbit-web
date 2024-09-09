@@ -25,6 +25,7 @@ export class ThreadEditComponent implements OnInit {
       this.editMode = params['id'] != null;
       this.initForm();
     });
+    this.threadService.fetchThread(this.id);
   }
 
   ngSubmit() {
@@ -46,26 +47,19 @@ export class ThreadEditComponent implements OnInit {
     let threadImageUrl = '';
     // let userId = authService.currentUserId;
     let threadUserId = 1;
-    let threadUpdatedDate = new Date();
-    let createdDate: Date;
 
     if (this.editMode) {
       const thread = this.threadService.getThread(this.id);
       threadTitle = thread.title;
       threadDescription = thread.description;
       threadImageUrl = thread.imageUrl;
-      createdDate = thread.createdDate;
-    } else {
-      createdDate = new Date();
     }
 
     this.threadForm = new FormGroup({
       title: new FormControl(threadTitle, Validators.required),
       description: new FormControl(threadDescription, Validators.required),
       imageUrl: new FormControl(threadImageUrl),
-      userId: new FormControl(threadUserId),
-      createdDate: new FormControl(createdDate),
-      updatedDate: new FormControl(threadUpdatedDate),
+      userId: new FormControl(threadUserId)
     });
   }
 }

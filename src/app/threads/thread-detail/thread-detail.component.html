@@ -1,3 +1,4 @@
+<div *ngIf="thread; else loading">
 <div class="row">
   <div class="col-xs-12">
     <img
@@ -20,3 +21,7 @@
         </ul>
     </div>
 </div>
+</div>
+<ng-template #loading>
+  <p>Loading thread details...</p>
+</ng-template>

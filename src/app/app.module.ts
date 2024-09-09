@@ -7,6 +7,7 @@ import { ThreadsModule } from './threads/threads.module';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
 import { AuthComponent } from './auth/auth.component';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, AuthComponent],
@@ -18,6 +19,7 @@ import { AuthComponent } from './auth/auth.component';
   ],
   providers: [
     //provideClientHydration()
+    provideHttpClient(withFetch())
   ],
   bootstrap: [AppComponent],
 })

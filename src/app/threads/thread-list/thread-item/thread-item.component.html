@@ -5,13 +5,13 @@
   class="list-group-item clearfix"
 >
   <div class="pull-left">
-    <h4 class="list-group-item-heading">{{thread.title}}</h4>
+    <h4 class="list-group-item-heading">{{thread?.title}}</h4>
     <p class="list-group-item-text">{{thread.description}}</p>
   </div>
   <span class="pull-right">
     <img 
     src="{{thread.imageUrl}}" 
-    alt="{{thread.title}}" 
+    alt="{{thread?.title}}" 
     class="img-responsive" 
     style="max-height: 50px; border-radius: 50%;">
 </span>
