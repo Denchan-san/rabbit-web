@@ -25,7 +25,6 @@ export class ThreadEditComponent implements OnInit {
       this.editMode = params['id'] != null;
       this.initForm();
     });
-    this.threadService.fetchThread(this.id);
   }
 
   ngSubmit() {

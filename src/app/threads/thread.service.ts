@@ -27,7 +27,7 @@ export class ThreadService implements OnInit {
   }
 
   getThread(id: number) {
-    return this.threads[id];
+    return this.threads.find(thread => thread.id === id);
   }
 
   updateThread(id: number, newThread: Thread) {
@@ -57,21 +57,6 @@ export class ThreadService implements OnInit {
         }),
         tap((threads) => {
           this.setThreads(threads);
-        })
-      );
-  }
-
-  fetchThread(id: number) {
-    return this.http
-      .get<ApiResponse>('https://localhost:7231/api/Threads/:id')
-      .pipe(
-        map((response) => {
-          const thread = response.result || null;
-          return thread;
-        }),
-        tap((thread) => {
-          console.log('fetching one thread');
-          this.setThreads(thread);
         })
       );
   }

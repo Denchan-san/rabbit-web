@@ -15,20 +15,22 @@ export class ThreadDetailComponent implements OnInit {
   constructor(
     private threadService: ThreadService,
     private route: ActivatedRoute,
-    private router: Router
   ) {}
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.id = +params['id'];
       this.thread = this.threadService.getThread(this.id);
-
+      
       if (!this.thread) {
         // Optionally fetch thread data if not found in the service
         this.threadService.fetchThreads().subscribe((threads) => {
           this.thread = this.threadService.getThread(this.id);
+          console.log(this.thread);
         });
       }
     });
+
+
   }
 }
