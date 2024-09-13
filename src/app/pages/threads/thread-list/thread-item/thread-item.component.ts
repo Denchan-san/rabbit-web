@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { Thread } from '../../thread.model';
+import { Thread } from '../../../../shared/models/thread.model';
 
 @Component({
   selector: 'app-thread-item',

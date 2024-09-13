@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ThreadService } from '../thread.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { map } from 'rxjs';
+import { Thread } from '../../../shared/models/thread.model';
 
 @Component({
   selector: 'app-thread-edit',
@@ -29,9 +31,11 @@ export class ThreadEditComponent implements OnInit {
 
   ngSubmit() {
     if (this.editMode) {
+      //update
       this.threadService.updateThread(this.id, this.threadForm.value);
     } else {
-      this.threadService.addThread(this.threadForm.value);
+      //this.threadService.postThread(map((this.threadForm.value))
+      //this.threadService.addThread(this.threadForm.value);
     }
     this.onCancel();
   }

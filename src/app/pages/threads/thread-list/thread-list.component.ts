@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { Thread } from '../thread.model';
+import { Thread } from '../../../shared/models/thread.model';
 import { ThreadService } from '../thread.service';
 
 @Component({
@@ -45,7 +45,6 @@ export class ThreadListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Ensure both subscriptions are properly unsubscribed to prevent memory leaks
     if (this.threadChangeSub) {
       this.threadChangeSub.unsubscribe();
     }

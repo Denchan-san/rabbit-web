@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
-import { Post } from '../post.model';
+import { Post } from '../../../shared/models/post.model';
 import { PostService } from '../post.service';
 
 @Component({

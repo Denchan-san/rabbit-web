@@ -5,5 +5,10 @@ import { Component } from '@angular/core';
   templateUrl: './auth.component.html',
 })
 export class AuthComponent {
+  isLoginMode = true;
+  isLoading = false;
+  error: string = null;
+
+  
 
 }

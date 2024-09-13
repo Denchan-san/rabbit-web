@@ -1,9 +1,9 @@
 import { Injectable, OnInit } from '@angular/core';
 
-import { map, Subject, tap } from 'rxjs';
+import { catchError, map, of, Subject, tap } from 'rxjs';
 
-import { Thread } from './thread.model';
-import { HttpClient } from '@angular/common/http';
+import { Thread } from '../../shared/models/thread.model';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 interface ApiResponse {
   statusCode: number;
@@ -27,7 +27,7 @@ export class ThreadService implements OnInit {
   }
 
   getThread(id: number) {
-    return this.threads.find(thread => thread.id === id);
+    return this.threads.find((thread) => thread.id === id);
   }
 
   updateThread(id: number, newThread: Thread) {
@@ -55,9 +55,32 @@ export class ThreadService implements OnInit {
             return { ...thread };
           });
         }),
-        tap((threads) => {
-          this.setThreads(threads);
+        tap((thread) => {
+          this.setThreads(thread);
+        }),
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error fetching threads:', error);
+          return of([]); // Return an empty array or handle the error accordingly
         })
       );
+  }
+
+  fetchThread(id: number) {
+    return this.http
+      .get<ApiResponse>(`https://localhost:7231/api/Threads/${id}`)
+      .pipe(
+        map((response) => {
+          return response.result;
+        }),
+        tap((thread) => {
+          if (thread) {
+            this.setThreads(thread);
+          }
+        })
+      );
+  }
+
+  postThread(thread: Thread) {
+
   }
 }

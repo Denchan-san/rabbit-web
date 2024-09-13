@@ -6,7 +6,7 @@ const appRoutes: Routes = [
   {
     path: 'threads',
     loadChildren: () =>
-      import('./threads/threads.module').then((m) => m.ThreadsModule),
+      import('./pages/threads/threads.module').then((m) => m.ThreadsModule),
   },
 ];
 
