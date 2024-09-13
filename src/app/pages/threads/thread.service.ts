@@ -2,7 +2,7 @@ import { Injectable, OnInit } from '@angular/core';
 
 import { catchError, map, of, Subject, tap } from 'rxjs';
 
-import { Thread } from '../../shared/models/thread.model';
+import { Thread } from './models/thread.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 interface ApiResponse {

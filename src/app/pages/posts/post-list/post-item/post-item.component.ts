@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { Post } from '../../../../shared/models/post.model';
+import { Post } from '../../models/post.model';
 
 @Component({
   selector: 'app-post-item',

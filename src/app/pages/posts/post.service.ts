@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Subject } from 'rxjs';
 
-import { Post } from '../../shared/models/post.model';
+import { Post } from './models/post.model';
 
 @Injectable({ providedIn: 'root' })
 export class PostService {

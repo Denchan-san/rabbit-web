@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { Thread } from '../../../shared/models/thread.model';
+import { Thread } from '../models/thread.model';
 import { ThreadService } from '../thread.service';
 
 @Component({

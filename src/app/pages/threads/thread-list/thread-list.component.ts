@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { Thread } from '../../../shared/models/thread.model';
+import { Thread } from '../models/thread.model';
 import { ThreadService } from '../thread.service';
 
 @Component({

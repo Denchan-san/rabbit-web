@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ThreadService } from '../thread.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { map } from 'rxjs';
-import { Thread } from '../../../shared/models/thread.model';
+import { Thread } from '../models/thread.model';
 
 @Component({
   selector: 'app-thread-edit',
