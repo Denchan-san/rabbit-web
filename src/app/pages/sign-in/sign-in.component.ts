@@ -9,9 +9,10 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../shared/auth/auth.service';
+import { take, tap } from 'rxjs';
 
 interface SignInForm {
-  username: FormControl<string>;
+  email: FormControl<string>;
   password: FormControl<string>;
 }
 
@@ -24,12 +25,10 @@ interface SignInForm {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignInComponent {
-
   signInForm: FormGroup<SignInForm> = this.formBuilder.group<SignInForm>({
-    username: this.formBuilder.control<string>('', [
+    email: this.formBuilder.control<string>('', [
       Validators.required,
-      Validators.minLength(4),
-      Validators.maxLength(32),
+      //Validators.email,
     ]),
     password: this.formBuilder.control<string>('', [
       Validators.required,
@@ -44,8 +43,20 @@ export class SignInComponent {
     private authService: AuthService
   ) {}
 
+  showPassword: boolean = false;
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
   onSignIn() {
-    throw new Error('Method not implemented.');
+    this.authService
+      .signin(this.signInForm.getRawValue())
+      .pipe(
+        take(1),
+        tap(() => this.router.navigate(['threads']))
+      )
+      .subscribe();
   }
 
   openSignUpPage() {

@@ -30,15 +30,22 @@
           </div>
           <div class="form-group">
             <label for="registerPassword">Password</label>
-            <input
-              type="password"
-              class="form-control"
-              id="registerPassword"
-              [formControl]="signUpForm.controls.password"
-              name="registerPassword"
-              placeholder="Enter password"
-            />
-          </div>
+                <input
+                  [type]="showPassword ? 'text' : 'password'"
+                  class="form-control"
+                  id="registerPassword"
+                  [formControl]="signUpForm.controls.password"
+                  name="registerPassword"
+                  placeholder="Enter password"
+                />
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="togglePasswordVisibility()"
+                >
+                  {{ showPassword ? "Hide" : "Show" }}
+                </button>
+              </div>
           <div class="form-group">
             <label for="registerAvatarUrl">AvatarUrl</label>
             <input

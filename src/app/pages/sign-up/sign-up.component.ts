@@ -10,6 +10,7 @@ import {
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { AuthService } from '../../shared/auth/auth.service';
+import { take, tap } from 'rxjs';
 
 interface SignUpForm {
   username: FormControl<string>;
@@ -41,7 +42,7 @@ export class SignUpComponent {
       Validators.minLength(6),
       Validators.maxLength(32),
     ]),
-    avatarUrl: this.formBuilder.control<string>('', [Validators.required]),
+    avatarUrl: this.formBuilder.control<string>(''),
   });
 
   constructor(
@@ -50,8 +51,20 @@ export class SignUpComponent {
     private authService: AuthService
   ) {}
 
+  showPassword: boolean = false;
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
   onSignUp() {
-    throw new Error('Method not implemented.');
+    this.authService
+      .signup(this.signUpForm.getRawValue())
+      .pipe(
+        take(1),
+        tap(() => this.router.navigate(['threads']))
+      )
+      .subscribe();
   }
   
   openSignInPage() {

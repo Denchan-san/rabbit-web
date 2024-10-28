@@ -28,12 +28,12 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  signup(name: string, email: string, password: string, avatarUrl: string) {
+  signup({username, email, password, avatarUrl}:{username: string, email: string, password: string, avatarUrl: string}) {
     return this.http
       .post<{ statusCode: number; isSuccess: boolean; errorMessages: string[]; result: any }>(
-        'https://localhost:7231/Users/register',
+        'https://localhost:7231/api/UsersAuth/register',
         {
-          name: name,
+          name: username,
           email: email,
           password: password,
           avatarUrl: avatarUrl,
@@ -53,9 +53,9 @@ export class AuthService {
   }
   
 
-  login(email: string, password: string) {
+  signin({ email, password }: { email: string, password: string }) {
     return this.http
-      .post<AuthResponseData>('https://localhost:7231/api/Users/login', {
+      .post<AuthResponseData>('https://localhost:7231/api/UsersAuth/login', {
         email: email,
         password: password,
       })
