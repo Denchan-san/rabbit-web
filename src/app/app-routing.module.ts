@@ -18,7 +18,7 @@ const appRoutes: Routes = [
       import('./pages/sign-up/sign-up.component').then(
         (m) => m.SignUpComponent
       ),
-    canActivate: [AuthGuard],
+    //canActivate: [AuthGuard],
   },
   {
     path: 'threads',

@@ -44,10 +44,11 @@ export class SignInComponent {
     private authService: AuthService
   ) {}
 
-  openSignUpPage() {
-    throw new Error('Method not implemented.');
-  }
   onSignIn() {
     throw new Error('Method not implemented.');
+  }
+
+  openSignUpPage() {
+    this.router.navigate(['sign-up']);
   }
 }

@@ -1,1 +1,78 @@
-<p>sign-up works!</p>
+<!-- TODO: add loader -->
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div>
+        <h2>Register</h2>
+        <form [formGroup]="signUpForm" (ngSubmit)="onSignUp()">
+          <div class="form-group">
+            <label for="registerUsername">Username</label>
+            <input
+              type="text"
+              class="form-control"
+              id="registerUsername"
+              [formControl]="signUpForm.controls.username"
+              name="registerUsername"
+              placeholder="Enter login"
+            />
+          </div>
+          <div class="form-group">
+            <label for="registerEmail">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="registerEmail"
+              [formControl]="signUpForm.controls.email"
+              name="registerEmail"
+              placeholder="Enter email"
+            />
+          </div>
+          <div class="form-group">
+            <label for="registerPassword">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="registerPassword"
+              [formControl]="signUpForm.controls.password"
+              name="registerPassword"
+              placeholder="Enter password"
+            />
+          </div>
+          <div class="form-group">
+            <label for="registerAvatarUrl">AvatarUrl</label>
+            <input
+              type="avatarUrl"
+              class="form-control"
+              id="registerAvatarUrl"
+              [formControl]="signUpForm.controls.avatarUrl"
+              name="registerAvatarUrl"
+              placeholder="Enter Avatar Url"
+            />
+          </div>
+
+          <div class="d-flex align-items-center justify-content-between mt-2">
+            <button
+              mat-flat-button
+              type="submit"
+              class="rounded"
+              [disabled]="signUpForm.invalid"
+            >
+              Register
+            </button>
+            <div class="ps-2">
+              Already registered? <br />
+              <button
+                type="button"
+                class="btn btn-link p-0"
+                (click)="openSignInPage()"
+              >
+                Login to account
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
