@@ -14,7 +14,7 @@ export interface AuthResponseData {
       id: string;
       email: string;
       name: string;
-      avatarUrl: string;
+      avatar: string;
     };
     token: string;
   };
@@ -28,7 +28,7 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  signup({username, email, password, avatarUrl}:{username: string, email: string, password: string, avatarUrl: string}) {
+  signup({username, email, password, avatar}:{username: string, email: string, password: string, avatar: string}) {
     return this.http
       .post<{ statusCode: number; isSuccess: boolean; errorMessages: string[]; result: any }>(
         'https://localhost:7231/api/UsersAuth/register',
@@ -36,7 +36,7 @@ export class AuthService {
           name: username,
           email: email,
           password: password,
-          avatarUrl: avatarUrl,
+          avatar: avatar,
         }
       )
       .pipe(
@@ -67,7 +67,7 @@ export class AuthService {
             userResponse.id,
             userResponse.name,
             userResponse.email,
-            userResponse.avatarUrl,
+            userResponse.avatar,
             responseData.result.token,
             new Date(new Date().getTime() + 3600 * 1000)
           );

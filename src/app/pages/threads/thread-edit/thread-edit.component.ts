@@ -47,7 +47,7 @@ export class ThreadEditComponent implements OnInit {
   private initForm() {
     let threadTitle = '';
     let threadDescription = '';
-    let threadImageUrl = '';
+    let threadImage = '';
     // let userId = authService.currentUserId;
     let threadUserId = 1;
 
@@ -55,13 +55,13 @@ export class ThreadEditComponent implements OnInit {
       const thread = this.threadService.getThread(this.id);
       threadTitle = thread.title;
       threadDescription = thread.description;
-      threadImageUrl = thread.imageUrl;
+      threadImage = thread.image;
     }
 
     this.threadForm = new FormGroup({
       title: new FormControl(threadTitle, Validators.required),
       description: new FormControl(threadDescription, Validators.required),
-      imageUrl: new FormControl(threadImageUrl),
+      image: new FormControl(threadImage),
       userId: new FormControl(threadUserId)
     });
   }

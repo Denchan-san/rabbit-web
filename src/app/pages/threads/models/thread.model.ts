@@ -2,20 +2,20 @@ export class Thread {
     public id: number;
     public title: string;
     public description: string;
-    public imageUrl?: string;
+    public image?: string;
     public userId?: number;
   
     constructor(
       id: number,
       title: string,
       description: string,
-      imageUrl?: string,
+      image?: string,
       userId?: number
     ) {
       this.id = id;
       this.title = title;
       this.description = description;
-      this.imageUrl = imageUrl;
+      this.image = image;
       this.userId = userId;
     }
   }
