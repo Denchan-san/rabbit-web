@@ -9,7 +9,8 @@ import { ThreadDetailComponent } from './thread-detail/thread-detail.component';
 import { ThreadEditComponent } from './thread-edit/thread-edit.component';
 import { ThreadsRoutingModule } from "./threads-routing.module";
 import { PostsModule } from "../posts/posts.module";
-import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { SharedModule } from "../../shared/shared.module";
 
 @NgModule({
     declarations: [
@@ -20,12 +21,14 @@ import { ReactiveFormsModule } from "@angular/forms";
         ThreadEditComponent
     ],
     imports: [
-        RouterModule,
-        CommonModule,
-        ThreadsRoutingModule,
-        PostsModule,
-        ReactiveFormsModule
-    ],
+    RouterModule,
+    CommonModule,
+    ThreadsRoutingModule,
+    PostsModule,
+    ReactiveFormsModule,
+    SharedModule,
+    FormsModule
+],
 
 })
 export class ThreadsModule {}

@@ -1,18 +1,15 @@
 <a
   style="cursor: pointer"
-  [routerLink]="[thread.id]" 
+  [routerLink]="[thread.id]"
   routerLinkActive="active"
-  class="list-group-item clearfix"
+  class="card thread-item-card"
+  [@fadeInOut]
 >
-  <div class="pull-left">
-    <h4 class="list-group-item-heading">{{thread?.title}}</h4>
-    <p class="list-group-item-text">{{thread.description}}</p>
+  <div class="thread-item-img-wrapper">
+    <div
+      class="thread-item-img"
+      [style.background-image]="'url(data:image/png;base64,' + thread.image + ')'"
+    ></div>
+    <div class="thread-item-title">{{ "~" + thread?.title + "~"}}</div>
   </div>
-  <span class="pull-right">
-    <img 
-    src="data:image/png;base64,{{thread.image}}" 
-    alt="{{thread?.title}}" 
-    class="img-responsive" 
-    style="max-height: 50px; border-radius: 50%;">
-</span>
 </a>

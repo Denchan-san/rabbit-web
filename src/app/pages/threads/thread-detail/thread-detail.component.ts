@@ -14,21 +14,35 @@ export class ThreadDetailComponent implements OnInit {
 
   constructor(
     private threadService: ThreadService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
+
+  isOwner(id: number) {
+    //TODO: add session and validation;
+    return true;
+  }
+
+  onUpdateThread() {
+    this.router.navigate(['edit'], {relativeTo: this.route});
+  }
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.id = +params['id'];
       this.thread = this.threadService.getThread(this.id);
 
-      // if (!this.thread) {
-      //   // Optionally fetch thread data if not found in the service
-      //   console.log('threads are lost');
-      //   this.threadService.fetchThreads().subscribe(() => {
-      //     this.thread = this.threadService.getThread(this.id);
-      //   });
-      // }
+      if (!this.thread) {
+        console.log(`Thread with ID ${this.id} not found in service.`);
+        this.threadService.fetchThread(this.id).subscribe(
+          (fetchedThread) => {
+            this.thread = fetchedThread;
+          },
+          (error) => {
+            console.error('Failed to fetch thread:', error);
+          }
+        );
+      }
     });
   }
 }

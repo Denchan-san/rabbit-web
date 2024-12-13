@@ -1,14 +1,22 @@
 <div class="row">
-    <div class="col-xs-12">
-        <button class="btn btn-success" (click)="onNewThread()">New Thread</button>
-    </div>
+  <div class="col-xs-12 mb-3 d-flex align-items-center">
+    <button class="btn btn-success me-3" (click)="onNewThread()">New Thread</button>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Search threads by title"
+      [(ngModel)]="searchQuery"
+      (input)="onSearch()"
+      style="max-width: 90%;"
+    />
+  </div>
 </div>
-<hr>
-<div class="row">
-    <div class="col-xs-12" style="text-align: center;">
-        <app-thread-item
-        *ngFor="let threadElement of threads; let i = id"
-        [thread]="threadElement"
-        [id]="i"></app-thread-item>
-    </div>
+<hr />
+<div class="row g-4">
+  <div
+    class="col-12 col-md-4"
+    *ngFor="let threadElement of filteredThreads; let i = index"
+  >
+    <app-thread-item [thread]="threadElement" [id]="i"></app-thread-item>
+  </div>
 </div>

@@ -30,32 +30,32 @@
           </div>
           <div class="form-group">
             <label for="registerPassword">Password</label>
-                <input
-                  [type]="showPassword ? 'text' : 'password'"
-                  class="form-control"
-                  id="registerPassword"
-                  [formControl]="signUpForm.controls.password"
-                  name="registerPassword"
-                  placeholder="Enter password"
-                />
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary"
-                  (click)="togglePasswordVisibility()"
-                >
-                  {{ showPassword ? "Hide" : "Show" }}
-                </button>
-              </div>
-              <div class="form-group">
-                <label for="registerAvatar">Avatar</label>
-                <input
-                    type="file"
-                    class="form-control"
-                    id="registerAvatar"
-                    (change)="onFileSelected($event)"
-                    accept="image/*"
-                />
-            </div>
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              class="form-control"
+              id="registerPassword"
+              [formControl]="signUpForm.controls.password"
+              name="registerPassword"
+              placeholder="Enter password"
+            />
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              (click)="togglePasswordVisibility()"
+            >
+              {{ showPassword ? "Hide" : "Show" }}
+            </button>
+          </div>
+          <div class="form-group">
+            <label for="registerAvatar">Avatar</label>
+            <input
+              type="file"
+              class="form-control"
+              id="registerAvatar"
+              (change)="onFileSelected($event)"
+              accept="image/*"
+            />
+          </div>
 
           <div class="d-flex align-items-center justify-content-between mt-2">
             <button

@@ -27,6 +27,8 @@ interface SignUpForm {
   styleUrl: './sign-up.component.css',
 })
 export class SignUpComponent {
+  showPassword: boolean = false;
+
   signUpForm: FormGroup<SignUpForm> = this.formBuilder.group<SignUpForm>({
     username: this.formBuilder.control<string>('', [
       Validators.required,
@@ -51,8 +53,6 @@ export class SignUpComponent {
     private authService: AuthService
   ) {}
 
-  showPassword: boolean = false;
-
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }
@@ -67,22 +67,19 @@ export class SignUpComponent {
           const canvas = document.createElement('canvas');
           const ctx = canvas.getContext('2d');
           
-          // Set canvas size to 256x256 pixels
           canvas.width = 256;
           canvas.height = 256;
 
-          // Draw the image on the canvas
           ctx.drawImage(img, 0, 0, 256, 256);
 
-          // Convert the canvas content to Base64
-          const base64String = canvas.toDataURL(file.type); // Get Base64 string
+          const base64String = canvas.toDataURL(file.type); 
           const base64StringToSend = base64String.split(',')[1];
           console.log(base64StringToSend);
-          this.signUpForm.controls.avatar.setValue(base64StringToSend); // Set the Base64 string to the form control
+          this.signUpForm.controls.avatar.setValue(base64StringToSend);
         };
-        img.src = reader.result as string; // Set image source to the FileReader result
+        img.src = reader.result as string; 
       };
-      reader.readAsDataURL(file);  // Read the file as a data URL (Base64)
+      reader.readAsDataURL(file); 
     }
   }
 

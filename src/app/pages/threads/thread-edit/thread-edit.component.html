@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-xs-12">
+    <h2>{{ editMode ? "Update Thread" : "New Thread" }}</h2>
     <form [formGroup]="threadForm" (ngSubmit)="ngSubmit()">
-
       <div class="row">
         <div class="col-xs-12">
           <div class="form-group">
@@ -11,6 +11,7 @@
               id="title"
               formControlName="title"
               class="form-control"
+              placeholder="Enter title"
             />
           </div>
         </div>
@@ -25,35 +26,36 @@
               id="description"
               formControlName="description"
               class="form-control"
+              placeholder="Enter description"
             />
           </div>
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-xs-12">
-            <div class="form-group">
-                <label for="imageUrl">Image URL</label>
-                <input 
-                type="text" 
-                id="imageUrl"
-                formControlName="imageUrl"
-                class="form-control"
-                #imageUrl>
-            </div>
+      <div class="form-group">
+        <label for="image">Image</label>
+        <div *ngIf="threadForm.controls.image.value" class="mb-2">
+          <img
+            [src]="'data:image/png;base64,' + threadForm.controls.image.value"
+            alt="Thread Image"
+            style="max-width: 100%; max-height: 200px"
+          />
         </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <img [src]="imageUrl.value" class="img-responsive">
-        </div>
-    </div>
+        <input
+          type="file"
+          id="image"
+          class="form-control"
+          (change)="onFileSelected($event)"
+          accept="image/*"
+        />
+      </div>
 
       <div class="row">
         <div class="col-xs-12">
           <button
+            mat-flat-button
             type="submit"
-            class="btn btn-success"
+            class="rounded"
             [disabled]="!threadForm.valid"
           >
             Save

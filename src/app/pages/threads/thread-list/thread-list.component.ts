@@ -8,12 +8,14 @@ import { ThreadService } from '../thread.service';
 @Component({
   selector: 'app-thread-list',
   templateUrl: './thread-list.component.html',
-  styleUrls: ['./thread-list.component.css'], // Fix styleUrls here
+  styleUrls: ['./thread-list.component.css'],
 })
 export class ThreadListComponent implements OnInit, OnDestroy {
   threads: Thread[] = [];
-  private threadChangeSub: Subscription; // Mark it as private
-  private fetchingThreadSub: Subscription; // Mark it as private
+  filteredThreads: Thread[] = [];
+  searchQuery: string = ''; // For binding the search input
+  private threadChangeSub: Subscription;
+  private fetchingThreadSub: Subscription;
 
   constructor(
     private threadService: ThreadService,
@@ -22,21 +24,28 @@ export class ThreadListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    // Subscribe to the fetchThreads() observable to load threads initially
     this.fetchingThreadSub = this.threadService.fetchThreads().subscribe(
       (threads) => {
         this.threads = threads;
+        this.filteredThreads = threads; // Initialize filteredThreads
       },
       (error) => {
         console.error('Error fetching threads', error);
       }
     );
 
-    // Subscribe to threadsChanged to listen for future updates
     this.threadChangeSub = this.threadService.threadsChanged.subscribe(
       (updatedThreads: Thread[]) => {
         this.threads = updatedThreads;
+        this.filteredThreads = updatedThreads; // Update filtered threads
       }
+    );
+  }
+
+  onSearch() {
+    const query = this.searchQuery.toLowerCase();
+    this.filteredThreads = this.threads.filter((thread) =>
+      thread.title.toLowerCase().includes(query)
     );
   }
 

@@ -8,12 +8,15 @@ import { RouterModule } from '@angular/router';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { ThreadsModule } from './pages/threads/threads.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent],
+  declarations: [AppComponent, HeaderComponent, UserProfileComponent],
   imports: [
     ThreadsModule,
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     RouterModule,
     SharedModule
