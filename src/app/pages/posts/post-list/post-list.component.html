@@ -1,14 +1,26 @@
 <div class="row">
-    <div class="col-xs-12">
-        <button class="btn btn-success" (click)="onNewPost()">New Post</button>
-    </div>
+  <div class="col-xs-12 mb-3 d-flex align-items-center">
+    <button class="btn btn-success me-3" (click)="onNewPost()">New Post</button>
+    <input
+      type="text"
+      class="form-control me-3"
+      placeholder="Search posts by title"
+      [(ngModel)]="searchQuery"
+      (input)="onSearch()"
+      style="max-width: 80%"
+    />
+    <select class="form-select" style="max-width: 20%;" [(ngModel)]="sortOption" (change)="onSort()">
+      <option value="newest">Newest</option>
+      <option value="oldest">Oldest</option>
+      <option value="title">Title</option>
+    </select>
+  </div>
 </div>
-<hr>
-<div class="row">
-    <div class="col-xs-12" style="text-align: center;">
-        <app-post-item
-        *ngFor="let postElement of posts; let i = id"
-        [post]="postElement"
-        [id]="i"></app-post-item>
-    </div>
+<div class="row g-3">
+  <div
+    class="col-12"
+    *ngFor="let postElement of filteredPosts; let i = index"
+  >
+    <app-post-item [post]="postElement" [id]="i"></app-post-item>
+  </div>
 </div>

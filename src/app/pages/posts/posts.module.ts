@@ -7,6 +7,8 @@ import { PostDetailComponent } from './post-detail/post-detail.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PostsRoutingModule } from './posts-routing.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommentariesModule } from '../commentaries/commentaries.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,14 @@ import { PostsRoutingModule } from './posts-routing.module';
     PostDetailComponent,
     PostEditComponent,
   ],
-  imports: [CommonModule, RouterModule, PostsRoutingModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    PostsRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CommentariesModule,
+  ],
   exports: [PostListComponent],
 })
 export class PostsModule {}

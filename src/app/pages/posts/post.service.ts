@@ -1,38 +1,111 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 
-import { Subject } from 'rxjs';
+import { catchError, map, Observable, of, Subject, tap } from 'rxjs';
 
 import { Post } from './models/post.model';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
-export class PostService {
+export class PostService implements OnInit {
   postsChanged = new Subject<Post[]>();
-  private posts: Post[] = [
-    new Post(
-      0,
-      'Proper Love',
-      "I fell in love with a girl..she's so hot!",
-      new Date(),
-      new Date(),
-      0,
-      1
-    ),
-    new Post(
-      0,
-      'Pure Love',
-      'Is love is real? I really havent got any love for those fucking hoes',
-      new Date(),
-      new Date(),
-      0,
-      1
-    ),
-  ];
+  private posts: Post[] = [];
 
-  getPostsWithThreadId(threadId: number) {
-    return this.posts.slice().filter(post => post.threadId === threadId);
+  constructor(private http: HttpClient) {}
+
+  ngOnInit() {}
+
+  getPosts() {
+    return this.posts.slice();
   }
 
   getPost(id: number) {
-    return this.posts[id];
+    return this.posts.find((post) => post.id === id);
+  }
+
+  updatePost(
+    id: number,
+    {
+      title,
+      description,
+      image,
+      threadId,
+      userId,
+    }: {
+      title: string;
+      description: string;
+      image: string;
+      threadId: number;
+      userId: number;
+    }
+  ) {
+    return this.http.put(`http://localhost:8080/posts/${id}`, {
+      title: title,
+      description: description,
+      image: image,
+      threadId: threadId,
+      userId: userId,
+    });
+  }
+
+  postPost({
+    title,
+    description,
+    image,
+    threadId,
+    userId,
+  }: {
+    title: string;
+    description: string;
+    image: string;
+    threadId: number;
+    userId: number;
+  }) {
+    console.log({ title, description, image, threadId, userId });
+    return this.http.post('http://localhost:8080/posts', {
+      title: title,
+      description: description,
+      image: image,
+      threadId: threadId,
+      userId: userId,
+    });
+  }
+
+  fetchPost(threadId: number, id: number): Observable<Post> {
+    return this.http.get<Post>(
+      `http://localhost:8080/posts?id=${id}&threadId=${threadId}`
+    );
+  }
+
+  fetchPosts(threadId: number): Observable<Post[]> {
+    return this.http
+      .get<Post[]>(`http://localhost:8080/posts?threadId=${threadId}`)
+      .pipe(
+        map((posts) => {
+          return posts.map((post) => ({
+            ...post,
+          }));
+        }),
+        tap((posts) => {
+          this.setPosts(posts);
+        }),
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error fetching posts:', error);
+          return of([]);
+        })
+      );
+  }
+
+  deletePost(id: number) {
+    console.log('deleteing post with id :' + id);
+    return this.http.delete(`http://localhost:8080/posts/${id}`);
+  }
+
+  setPosts(posts: Post[]) {
+    this.posts = posts;
+    this.postsChanged.next(this.posts.slice());
+  }
+
+  getPostsWithThreadId(threadId: number) {
+    return this.posts.slice().filter((post) => post.threadId === threadId);
   }
 }

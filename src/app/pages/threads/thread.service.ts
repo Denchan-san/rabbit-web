@@ -1,32 +1,26 @@
 import { Injectable, OnInit } from '@angular/core';
 
-import { catchError, map, Observable, of, Subject, tap, throwError } from 'rxjs';
+import {
+  catchError,
+  map,
+  Observable,
+  of,
+  Subject,
+  tap,
+  throwError,
+} from 'rxjs';
 
 import { Thread } from './models/thread.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { CreateThread } from './models/create-thread.model';
-
-interface Response {
-  statusCode: number;
-  isSuccess: boolean;
-  errorMessages: string[];
-  result: Thread[];
-}
 
 @Injectable({ providedIn: 'root' })
 export class ThreadService implements OnInit {
   threadsChanged = new Subject<Thread[]>();
+  private threads: Thread[] = [];
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {}
-
-  private threads: Thread[] = [
-    // { id: 1, title: "test1", description: "test1", image:"null",userId: 1},
-    // { id: 2, title: "test2", description: "test2", image:"null",userId: 1},
-    // { id: 3, title: "test3", description: "test3", image:"null",userId: 1},
-    // { id: 4, title: "test4", description: "test4", image:"null",userId: 1},
-  ];
 
   getThreads() {
     return this.threads.slice();
@@ -64,10 +58,6 @@ export class ThreadService implements OnInit {
     this.threads = threads;
     this.threadsChanged.next(this.threads.slice());
   }
-
-  // fetchThreads() {
-  //   return this.getThreads();
-  // }
 
   fetchThreads() {
     return this.http
@@ -126,28 +116,11 @@ export class ThreadService implements OnInit {
       userId: number;
     }
   ) {
-    console.log('THIS IS ID THAT UPDATES: ', id);
-    return this.http
-      .put(`http://localhost:8080/threads/${id}`, {
-        title: title,
-        description: description,
-        image: image,
-        userId: userId,
-      })
-  }
-
-  private handleError(errorResponse: HttpErrorResponse) {
-    let errorMessage = 'An unknown error occurred!';
-
-    if (!errorResponse.error || !errorResponse.error.error) {
-      return throwError(errorMessage);
-    }
-
-    switch (errorResponse.error.error.message) {
-      case 'THREAD_WITH_THIS_NAME_EXIST':
-        errorMessage = 'This thread name is already taken!';
-        break;
-    }
-    return throwError(errorMessage);
+    return this.http.put(`http://localhost:8080/threads/${id}`, {
+      title: title,
+      description: description,
+      image: image,
+      userId: userId,
+    });
   }
 }

@@ -5,9 +5,10 @@ import { PostDetailComponent } from './post-detail/post-detail.component';
 import { PostEditComponent } from './post-edit/post-edit.component';
 
 const routes: Routes = [
-  { path: 'threads/:id/posts', component: PostListComponent },
-  { path: 'threads/:id/posts/:id', component: PostDetailComponent },
-  { path: 'threads/:id/posts:id/edit', component: PostEditComponent },
+  { path: 'threads/:threadId/posts', component: PostListComponent },
+  { path: 'threads/:threadId/posts/new', component: PostEditComponent },
+  { path: 'threads/:threadId/posts/:id', component: PostDetailComponent },
+  { path: 'threads/:threadId/posts/:id/edit', component: PostEditComponent },
 ];
 
 @NgModule({

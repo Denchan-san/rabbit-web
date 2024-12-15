@@ -1,17 +1,28 @@
 <a
-  style="cursor: pointer"
-  [routerLink]="[post.id]"
+  style="cursor: pointer; text-decoration: none;"
+  [routerLink]="['/threads', post.threadId, 'posts', post.id]"
   routerLinkActive="active"
-  class="list-group-item clearfix"
+  class="list-group-item d-flex align-items-center justify-content-between"
 >
-  <div class="pull-left">
-    <p class="list-group-item-heading">{{ post.title }}</p>
-    <p class="list-group-item-text">
+  <div class="post-content">
+    <h5 class="post-title mb-2" style="color: black;">{{ post.title }}</h5>
+    <p class="post-description mb-0" style="color: black">
       {{
-        post.description.length > 15
-          ? post.description.slice(0, 15) + "..."
+        post.description.length > 30
+          ? post.description.slice(0, 30) + "..."
           : post.description
       }}
     </p>
+    <small class="text-muted" style="color: grey">
+      Posted {{ getTimeAgo(post.createdDate) }}
+    </small>
+  </div>
+  <div *ngIf="post.image" class="post-image">
+    <img
+      src="data:image/png;base64,{{ post.image }}"
+      alt="Post Image"
+      class="img-fluid rounded"
+      style="max-width: 100px; max-height: 100px;"
+    />
   </div>
 </a>

@@ -10,11 +10,15 @@ import { SharedModule } from './shared/shared.module';
 import { ThreadsModule } from './pages/threads/threads.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+import { PostsModule } from './pages/posts/posts.module';
+import { CommentariesModule } from './pages/commentaries/commentaries.module';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, UserProfileComponent],
   imports: [
     ThreadsModule,
+    PostsModule,
+    CommentariesModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,

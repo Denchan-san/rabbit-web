@@ -1,1 +1,38 @@
-<p>post-detail works!</p>
+<div class="row">
+  <div class="container mt-4">
+    <div class="post-detail">
+      <h2 class="post-title">{{ post?.title }}</h2>
+      <p class="post-meta text-muted">
+        Posted {{ getTimeAgo(post?.createdDate) }} by user with id :{{
+          post?.userId
+        }}
+      </p>
+      <div *ngIf="post?.image" class="post-image mb-3">
+        <img src="data:image/png;base64,{{ post.image }}" alt="Post Image" class="img-fluid rounded" />
+      </div>
+      <p class="post-description">{{ post?.description }}</p>
+    </div>
+    <div class="row">
+      <button
+        *ngIf="isOwner(post?.userId)"
+        class="btn btn-success w-100"
+        (click)="onUpdatePost()"
+      >
+        Update Post
+      </button>
+      <button
+        *ngIf="isOwner(post?.userId)"
+        class="btn btn-danger w-100"
+        (click)="onDeletePost()"
+      >
+        Delete Post
+      </button>
+    </div>
+  </div>
+  <hr />
+
+  <div class="comments-section">
+    <h4>--Commentaries--</h4>
+    <!-- <app-commentary-list></app-commentary-list> -->
+  </div>
+</div>

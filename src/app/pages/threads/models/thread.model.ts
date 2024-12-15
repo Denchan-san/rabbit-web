@@ -4,5 +4,4 @@ export class Thread {
   description: string;
   image: string | null;
   userId: number;
-  
 }
