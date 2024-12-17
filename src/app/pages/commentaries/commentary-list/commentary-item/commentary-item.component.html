@@ -1,1 +1,63 @@
-<p>commentary-item works!</p>
+<div
+  [style.marginLeft.px]="depth * 20"
+  class="commentary-item border rounded p-3 mb-3"
+  [style.backgroundColor]="depth % 2 === 0 ? '#f9f9f9' : '#ffffff'"
+>
+  <h6>Author ID: {{ commentary.userId }}</h6>
+  <div class="commentary-content">
+    <h5>{{ commentary.content }}</h5>
+    <small class="text-muted">{{ getTimestampLabel() }}</small>
+  </div>
+
+  <!-- Action buttons -->
+  <div class="mt-2">
+    <button class="btn btn-sm btn-outline-primary me-2" (click)="onReply()">Reply</button>
+    <button class="btn btn-sm btn-outline-warning me-2" (click)="onEdit()">Edit</button>
+    <button class="btn btn-sm btn-outline-danger" (click)="onDelete()">Delete</button>
+  </div>
+
+  <!-- Input for reply -->
+  <div class="mt-2" *ngIf="replying">
+    <input
+      [(ngModel)]="replyContent"
+      type="text"
+      class="form-control mb-2"
+      placeholder="Write your reply..."
+    />
+    <button
+      class="btn btn-sm btn-success me-2"
+      (click)="submitReply()"
+      [disabled]="!replyContent.trim()"
+    >
+      Submit Reply
+    </button>
+    <button class="btn btn-sm btn-secondary" (click)="cancelReply()">Cancel</button>
+  </div>
+
+  <!-- Input for edit -->
+  <div class="mt-2" *ngIf="editing">
+    <input
+      [(ngModel)]="editContent"
+      type="text"
+      class="form-control mb-2"
+      [value]="commentary.content"
+    />
+    <button
+      class="btn btn-sm btn-success me-2"
+      (click)="submitUpdate()"
+      [disabled]="!editContent.trim()"
+    >
+      Submit Update
+    </button>
+    <button class="btn btn-sm btn-secondary" (click)="cancelEdit()">Cancel</button>
+  </div>
+
+  <!-- Replies -->
+  <div class="replies mt-3" *ngFor="let child of childCommentaries">
+    <app-commentary-item
+      [commentary]="child"
+      [allCommentaries]="allCommentaries"
+      [depth]="depth + 1"
+    ></app-commentary-item>
+  </div>
+</div>

@@ -1,1 +1,22 @@
-<p>commentary-list works!</p>
+<hr>
+<h4>Commentaries:</h4>
+<div class="commentary-list">
+  <app-commentary-item
+  *ngFor="let commentary of rootCommentaries"
+  [commentary]="commentary"
+  [allCommentaries]="commentaries"
+  [depth]="0"
+  ></app-commentary-item>
+</div>
+<div class="row">
+  <div class="col-xs-12 mb-3 d-flex align-items-center">
+    <!-- Add input for commentary -->
+    <input
+      type="text"
+      class="form-control me-3"
+      placeholder="Write your commentary..."
+      [(ngModel)]="newCommentaryContent"
+    />
+    <button class="btn btn-success" (click)="onPostCommentary()">Submit</button>
+  </div>
+</div>

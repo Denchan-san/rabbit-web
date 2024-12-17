@@ -1,0 +1,26 @@
+.commentary-item {
+    border: 1px solid #ddd; /* Light gray border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 15px; /* Internal spacing */
+    background-color: #f9f9f9; /* Light background */
+    transition: background-color 0.3s ease; /* Smooth color transition */
+  }
+  
+  .commentary-item:hover {
+    background-color: #e9ecef; /* Slightly darker on hover */
+  }
+  
+  .commentary-content h5 {
+    margin: 0 0 5px; /* Reduce margin for the title */
+    color: #333; /* Darker color for readability */
+  }
+  
+  .commentary-content small {
+    font-size: 0.9em; /* Slightly smaller text for timestamp */
+    color: #6c757d; /* Muted text color */
+  }
+  
+  .replies {
+    margin-top: 10px; /* Space between parent and replies */
+  }
+  

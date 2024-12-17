@@ -60,7 +60,6 @@ export class PostService implements OnInit {
     threadId: number;
     userId: number;
   }) {
-    console.log({ title, description, image, threadId, userId });
     return this.http.post('http://localhost:8080/posts', {
       title: title,
       description: description,
@@ -96,16 +95,15 @@ export class PostService implements OnInit {
   }
 
   deletePost(id: number) {
-    console.log('deleteing post with id :' + id);
     return this.http.delete(`http://localhost:8080/posts/${id}`);
-  }
-
-  setPosts(posts: Post[]) {
-    this.posts = posts;
-    this.postsChanged.next(this.posts.slice());
   }
 
   getPostsWithThreadId(threadId: number) {
     return this.posts.slice().filter((post) => post.threadId === threadId);
+  }
+  
+  setPosts(posts: Post[]) {
+    this.posts = posts;
+    this.postsChanged.next(this.posts.slice());
   }
 }

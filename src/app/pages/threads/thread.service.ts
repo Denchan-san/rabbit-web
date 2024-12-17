@@ -93,7 +93,6 @@ export class ThreadService implements OnInit {
     image: string;
     userId: number;
   }) {
-    console.log({ title, description, image, userId });
     return this.http.post('http://localhost:8080/threads', {
       title: title,
       description: description,

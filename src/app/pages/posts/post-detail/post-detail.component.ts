@@ -26,11 +26,9 @@ export class PostDetailComponent implements OnInit {
       this.post = this.postService.getPost(this.id);
 
       if(!this.post) {
-        console.log(`post with id ${this.id} not found in service.`);
         this.postService.fetchPost(this.threadId, this.id).subscribe(
           (fetchedPost) => {
             this.post = fetchedPost[0]; //wtf why its array?
-            console.log(this.post);
           },
           (error) => {
             console.error('Failed to fetch post:', error);
