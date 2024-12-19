@@ -19,7 +19,7 @@
 
         <!-- Update Button: Shown only for thread owner -->
         <button
-          *ngIf="isOwner(thread.userId)"
+          *ngIf="isAdmin()"
           class="btn btn-success w-100"
           (click)="onUpdateThread()"
         >

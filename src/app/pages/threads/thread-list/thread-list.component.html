@@ -1,17 +1,17 @@
+<hr>
 <div class="row">
   <div class="col-xs-12 mb-3 d-flex align-items-center">
-    <button class="btn btn-success me-3" (click)="onNewThread()">New Thread</button>
+    <button *ngIf="isAdmin()" class="btn btn-success me-3" (click)="onNewThread()">New Thread</button>
     <input
       type="text"
       class="form-control"
       placeholder="Search threads by title"
       [(ngModel)]="searchQuery"
       (input)="onSearch()"
-      style="max-width: 90%;"
+      style="max-width: 100%;"
     />
   </div>
 </div>
-<hr />
 <div class="row g-4">
   <div
     class="col-12 col-md-4"

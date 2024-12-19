@@ -3,6 +3,7 @@
   class="commentary-item border rounded p-3 mb-3"
   [style.backgroundColor]="depth % 2 === 0 ? '#f9f9f9' : '#ffffff'"
 >
+<!-- TODO: add good view of user  -->
   <h6>Author ID: {{ commentary.userId }}</h6>
   <div class="commentary-content">
     <h5>{{ commentary.content }}</h5>
@@ -11,9 +12,15 @@
 
   <!-- Action buttons -->
   <div class="mt-2">
-    <button class="btn btn-sm btn-outline-primary me-2" (click)="onReply()">Reply</button>
-    <button class="btn btn-sm btn-outline-warning me-2" (click)="onEdit()">Edit</button>
-    <button class="btn btn-sm btn-outline-danger" (click)="onDelete()">Delete</button>
+    <button class="btn btn-sm btn-outline-primary me-2" (click)="onReply()">
+      Reply
+    </button>
+    <button *ngIf="isOwner(commentary?.userId)" class="btn btn-sm btn-outline-warning me-2" (click)="onEdit()">
+      Edit
+    </button>
+    <button *ngIf="isOwner(commentary?.userId)" class="btn btn-sm btn-outline-danger" (click)="onDelete()">
+      Delete
+    </button>
   </div>
 
   <!-- Input for reply -->
@@ -31,7 +38,9 @@
     >
       Submit Reply
     </button>
-    <button class="btn btn-sm btn-secondary" (click)="cancelReply()">Cancel</button>
+    <button class="btn btn-sm btn-secondary" (click)="cancelReply()">
+      Cancel
+    </button>
   </div>
 
   <!-- Input for edit -->
@@ -49,7 +58,9 @@
     >
       Submit Update
     </button>
-    <button class="btn btn-sm btn-secondary" (click)="cancelEdit()">Cancel</button>
+    <button class="btn btn-sm btn-secondary" (click)="cancelEdit()">
+      Cancel
+    </button>
   </div>
 
   <!-- Replies -->

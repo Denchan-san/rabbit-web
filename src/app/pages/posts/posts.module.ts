@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { PostsRoutingModule } from './posts-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommentariesModule } from '../commentaries/commentaries.module';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { CommentariesModule } from '../commentaries/commentaries.module';
     CommonModule,
     RouterModule,
     PostsRoutingModule,
+    SharedModule,
     FormsModule,
     ReactiveFormsModule,
     CommentariesModule,

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, NonNullableFormBuilder } from '@angular/forms';
 import { PostService } from '../post.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { AuthService } from '../../../shared/auth/auth.service';
 
 interface PostForm {
   title: FormControl<string>;
@@ -27,6 +28,7 @@ export class PostEditComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: NonNullableFormBuilder,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -75,7 +77,7 @@ export class PostEditComponent implements OnInit {
     let postTitle = '';
     let postDescription = '';
     let postImage = '';
-    let postUserId = 1; // Replace with the authenticated user's ID.
+    let postUserId = this.authService.getUserIdFromToken(); // Replace with the authenticated user's ID.
 
     if (this.editMode) {
       this.postService.fetchPost(this.threadId, this.id).subscribe((post) => {
@@ -83,7 +85,6 @@ export class PostEditComponent implements OnInit {
           postTitle = post[0].title;
           postDescription = post[0].description;
           postImage = post[0].image;
-          //threadId = post[0].threadId;
           postUserId = post[0].userId;
 
           this.postForm.setValue({

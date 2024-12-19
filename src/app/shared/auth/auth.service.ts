@@ -1,129 +1,144 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { User } from './models/user.model';
- 
-import { BehaviorSubject, catchError, tap, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { jwtDecode } from 'jwt-decode';
 
-export interface AuthResponseData {
-  statusCode: number;
-  isSuccess: boolean;
-  errorMessages: string[];
-  result: {
-    user: {
-      id: string;
-      email: string;
-      name: string;
-      avatar: string;
-    };
-    token: string;
-  };
-}
+import { BehaviorSubject, map, Observable, of } from 'rxjs';
+import { User, UserRole, UserCredentials } from './models/user.model';
 
-
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthService {
-  user = new BehaviorSubject<User>(null);
-  private tokenExpirationTimer: any;
+  user$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>({
+    id: 1,
+    roles: [UserRole.Admin],
+    username: '123123',
+  });
+  hasAdminPermission$: Observable<boolean> = this.user$.pipe(
+    map((user: User | null) => !!user?.roles.includes(UserRole.Admin))
+  );
 
-  constructor(private http: HttpClient, private router: Router) {}
+  private basic = 'http://localhost:8080/auth';
 
-  signup({username, email, password, avatar}:{username: string, email: string, password: string, avatar: string}) {
+  constructor(private http: HttpClient) {}
+
+  signIn({
+    username,
+    password,
+  }: {
+    username: string;
+    password: string;
+  }): Observable<UserCredentials> {
     return this.http
-      .post<{ statusCode: number; isSuccess: boolean; errorMessages: string[]; result: any }>(
-        'https://localhost:7231/api/UsersAuth/register',
-        {
-          name: username,
-          email: email,
-          password: password,
-          avatar: avatar,
-        }
-      )
-      .pipe(
-        catchError(this.handleError),
-        tap((response) => {
-          if (response.isSuccess) {
-            console.log('Registration successful');
-            this.router.navigate(['../'])
-          } else {
-            console.log('Registration failed:', response.errorMessages);
-          }
-        })
-      );
-  }
-  
-
-  signin({ email, password }: { email: string, password: string }) {
-    return this.http
-      .post<AuthResponseData>('https://localhost:7231/api/UsersAuth/login', {
-        email: email,
-        password: password,
+      .post<UserCredentials>(this.basic + '/login', {
+        username,
+        password,
       })
       .pipe(
-        catchError(this.handleError),
-        tap((responseData) => {
-          const userResponse = responseData.result.user;
-          this.handleAuthentication(
-            userResponse.id,
-            userResponse.name,
-            userResponse.email,
-            userResponse.avatar,
-            responseData.result.token,
-            new Date(new Date().getTime() + 3600 * 1000)
-          );
+        map((response: UserCredentials) => {
+          if (response.token) {
+            // Save token to localStorage
+            localStorage.setItem('jwtToken', response.token);
+
+            // Validate token and update user state
+            this.isTokenValid(response.token);
+          }
+          return response;
         })
       );
   }
+
+  signUp({
+    username,
+    email,
+    password,
+  }: {
+    username: string;
+    email: string;
+    password: string;
+  }): Observable<UserCredentials> {
+    return this.http.post<UserCredentials>(this.basic + '/register', {
+      username,
+      email,
+      password,
+    });
+  }
+
+  getUserIdFromToken(): number | null {
+    const token = localStorage.getItem('jwtToken');
+    if (!token || !this.isTokenValid(token)) {
+      return null;
+    }
+
+    const decodedToken: any = jwtDecode(token);
+
+    return decodedToken.userId || null; // Return userId, or null if not available
+  }
+
+  checkIfAdminFromToken() {
+    const token = localStorage.getItem('jwtToken');
+    if (!token || !this.isTokenValid(token)) {
+      return null;
+    }
   
-  private handleError(errorResponse: HttpErrorResponse) {
-    let errorMessage = 'An unknown error occurred!';
-
-    if (!errorResponse.error || !errorResponse.error.error) {
-      return throwError(errorMessage);
+    const decodedToken: any = jwtDecode(token);
+  
+    // Check if the decodedToken contains groups and if the 'admin' role is present
+    if (decodedToken?.groups) {
+      const roles = decodedToken.groups[0].split(','); // Split the string into an array of roles
+      if (roles.includes('admin')) {
+        return true; // User has Admin role
+      }
     }
+  
+    return false; // User does not have Admin role
+  }
+  
 
-    switch (errorResponse.error.error.message) {
-      case 'EMAIL_EXISTS':
-        errorMessage = 'This E-Mail were used already!';
-        break;
-      case 'EMAIL_NOT_FOUND':
-        errorMessage = 'This email does not exist.';
-        break;
-      case 'INVALID_LOGIN_CREDENTIALS':
-        errorMessage = 'Invalid login!';
-        break;
+  isTokenValid(token?: string): boolean {
+    try {
+      const jwtToken = token || localStorage.getItem('jwtToken');
+      if (!jwtToken) {
+        // No token found, reset user state
+        this.user$.next(null);
+        return false;
+      }
+
+      const decodedToken: {
+        id: number;
+        sub: string;
+        roles: UserRole[];
+        exp: number;
+      } = jwtDecode(jwtToken);
+
+      const currentTime = Math.floor(Date.now() / 1000);
+      if (decodedToken.exp < currentTime) {
+        // Token expired, reset user state
+        this.user$.next(null);
+        return false;
+      }
+
+      // Valid token, update user state
+      this.user$.next({
+        id: decodedToken.id,
+        username: decodedToken.sub,
+        roles: decodedToken.roles,
+      });
+      return true;
+    } catch (error) {
+      // Invalid token, reset user state
+      this.user$.next(null);
+      return false;
     }
-    return throwError(errorMessage);
   }
 
-  logout() {
-    this.user.next(null);
-    this.router.navigate(['/auth']);
-    localStorage.removeItem('userData');
-    if (this.tokenExpirationTimer) {
-      clearTimeout(this.tokenExpirationTimer);
-    }
-    this.tokenExpirationTimer = null;
+  // Getter for login state
+  get isLoggedIn(): boolean {
+    return this.isTokenValid();
   }
 
-  autoLogout(expirationDuration: number) {
-    this.tokenExpirationTimer = setTimeout(() => {
-      this.logout();
-    }, expirationDuration);
+  logout(): void {
+    localStorage.removeItem('jwtToken'); // Clear the token
+    this.user$.next(null); // Reset user state
   }
-
-  private handleAuthentication(
-    id: string,
-    name: string,
-    email: string,
-    avatarUrl: string,
-    token: string,
-    expiresIn: Date
-  ) {
-    const user = new User(id, name, email, avatarUrl, token, expiresIn);
-    this.user.next(user);
-    this.autoLogout(expiresIn.getTime() - new Date().getTime());
-    localStorage.setItem('userData', JSON.stringify(user));
-  }
-
 }

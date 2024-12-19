@@ -7,12 +7,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../shared/auth/auth.service';
 import { take, tap } from 'rxjs';
 
 interface SignInForm {
-  email: FormControl<string>;
+  username: FormControl<string>;
   password: FormControl<string>;
 }
 
@@ -26,9 +26,8 @@ interface SignInForm {
 })
 export class SignInComponent {
   signInForm: FormGroup<SignInForm> = this.formBuilder.group<SignInForm>({
-    email: this.formBuilder.control<string>('', [
+    username: this.formBuilder.control<string>('', [
       Validators.required,
-      //Validators.email,
     ]),
     password: this.formBuilder.control<string>('', [
       Validators.required,
@@ -40,6 +39,7 @@ export class SignInComponent {
   constructor(
     private formBuilder: NonNullableFormBuilder,
     private router: Router,
+    private route: ActivatedRoute,
     private authService: AuthService
   ) {}
 
@@ -50,11 +50,13 @@ export class SignInComponent {
   }
 
   onSignIn() {
+    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/threads';
+
     this.authService
-      .signin(this.signInForm.getRawValue())
+      .signIn(this.signInForm.getRawValue())
       .pipe(
         take(1),
-        tap(() => this.router.navigate(['threads']))
+        tap(() => this.router.navigateByUrl(returnUrl))
       )
       .subscribe();
   }

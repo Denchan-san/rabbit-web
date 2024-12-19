@@ -16,7 +16,6 @@ interface SignUpForm {
   username: FormControl<string>;
   email: FormControl<string>;
   password: FormControl<string>;
-  avatar: FormControl<string>;
 }
 
 @Component({
@@ -44,7 +43,6 @@ export class SignUpComponent {
       Validators.minLength(6),
       Validators.maxLength(32),
     ]),
-    avatar: this.formBuilder.control<string>(''),
   });
 
   constructor(
@@ -57,35 +55,9 @@ export class SignUpComponent {
     this.showPassword = !this.showPassword;
   }
 
-  onFileSelected(event: Event) {
-    const file = (event.target as HTMLInputElement).files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-          
-          canvas.width = 256;
-          canvas.height = 256;
-
-          ctx.drawImage(img, 0, 0, 256, 256);
-
-          const base64String = canvas.toDataURL(file.type); 
-          const base64StringToSend = base64String.split(',')[1];
-          console.log(base64StringToSend);
-          this.signUpForm.controls.avatar.setValue(base64StringToSend);
-        };
-        img.src = reader.result as string; 
-      };
-      reader.readAsDataURL(file); 
-    }
-  }
-
   onSignUp() {
     this.authService
-      .signup(this.signUpForm.getRawValue())
+      .signUp(this.signUpForm.getRawValue())
       .pipe(
         take(1),
         tap(() => this.router.navigate(['threads']))

@@ -12,9 +12,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { PostsModule } from './pages/posts/posts.module';
 import { CommentariesModule } from './pages/commentaries/commentaries.module';
+import { UserProfileModule } from './pages/user-profile/user-profile.module';
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, UserProfileComponent],
+  declarations: [AppComponent, HeaderComponent],
   imports: [
     ThreadsModule,
     PostsModule,
@@ -23,7 +24,8 @@ import { CommentariesModule } from './pages/commentaries/commentaries.module';
     BrowserAnimationsModule,
     AppRoutingModule,
     RouterModule,
-    SharedModule
+    SharedModule,
+    UserProfileModule
   ],
   providers: [
     //provideClientHydration()

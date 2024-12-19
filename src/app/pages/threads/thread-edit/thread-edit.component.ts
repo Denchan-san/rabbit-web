@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators, NonNullableFormBuilder } from '@angular/forms';
 import { ThreadService } from '../thread.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { AuthService } from '../../../shared/auth/auth.service';
 
 interface ThreadForm {
   title: FormControl<string>;
@@ -25,6 +26,7 @@ export class ThreadEditComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: NonNullableFormBuilder,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -61,7 +63,7 @@ export class ThreadEditComponent implements OnInit {
     let threadImage = ''; 
 
     // TODO: Replace with session or authenticated user ID
-    let threadUserId = 1; 
+    let threadUserId = this.authService.getUserIdFromToken(); 
   
     if (this.editMode) {
       this.threadService.fetchThread(this.id).subscribe((thread) => {

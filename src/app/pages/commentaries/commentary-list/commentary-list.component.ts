@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CommentaryService } from '../commentary.service';
 import { Commentary } from '../models/commentary.model';
+import { AuthService } from '../../../shared/auth/auth.service';
 
 @Component({
   selector: 'app-commentary-list',
@@ -14,11 +15,18 @@ export class CommentaryListComponent implements OnInit, OnDestroy {
   rootCommentaries: Commentary[] = [];
   newCommentaryContent = ''; // For posting new commentaries
 
+  isLoggedIn: boolean = false;
+
   private fetchingCommentariesSub!: Subscription;
 
-  constructor(private commentaryService: CommentaryService) {}
+  constructor(private commentaryService: CommentaryService, private authService: AuthService) {}
 
   ngOnInit() {
+    if(localStorage.length !== 0) {
+      this.isLoggedIn = true;
+    }
+    else this.isLoggedIn = false;
+    
     this.fetchingCommentariesSub = this.commentaryService
       .fetchCommentaries(this.postId)
       .subscribe(
@@ -37,6 +45,8 @@ export class CommentaryListComponent implements OnInit, OnDestroy {
         },
         (error) => console.error('Error fetching commentaries', error)
       );
+      
+      console.log('is logged in? >' + this.isLoggedIn);
   }
   
 
@@ -48,14 +58,13 @@ export class CommentaryListComponent implements OnInit, OnDestroy {
 
   // Post a new commentary
   onPostCommentary() {
-    console.log(this.newCommentaryContent);
     if (!this.newCommentaryContent.trim()) return;
 
     this.commentaryService
       .postCommentary({
         content: this.newCommentaryContent,
         postId: this.postId,
-        userId: 1, //TODO: add user
+        userId: this.authService.getUserIdFromToken(), //TODO: add user
         commentaryToId: null,
       })
       .subscribe({

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CommentaryListComponent } from './commentary-list/commentary-list.component';
 
 const routes: Routes = [
   {

@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 
 import { Thread } from '../models/thread.model';
 import { ThreadService } from '../thread.service';
+import { AuthService } from '../../../shared/auth/auth.service';
 
 @Component({
   selector: 'app-thread-list',
@@ -20,7 +21,8 @@ export class ThreadListComponent implements OnInit, OnDestroy {
   constructor(
     private threadService: ThreadService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -40,6 +42,11 @@ export class ThreadListComponent implements OnInit, OnDestroy {
         this.filteredThreads = updatedThreads; // Update filtered threads
       }
     );
+  }
+
+  isAdmin() {
+    console.log('admin????'+this.authService.checkIfAdminFromToken());
+    return this.authService.checkIfAdminFromToken();
   }
 
   onSearch() {

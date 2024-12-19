@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Thread } from '../models/thread.model';
 import { ThreadService } from '../thread.service';
+import { AuthService } from '../../../shared/auth/auth.service';
 
 @Component({
   selector: 'app-thread-detail',
@@ -15,16 +16,22 @@ export class ThreadDetailComponent implements OnInit {
   constructor(
     private threadService: ThreadService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   isOwner(id: number) {
-    //TODO: add session and validation;
-    return true;
+    if(this.authService.checkIfAdminFromToken()) return true;
+    if (this.thread.userId === this.authService.getUserIdFromToken()) return true;
+    return false;
   }
 
   onUpdateThread() {
     this.router.navigate(['edit'], {relativeTo: this.route});
+  }
+
+  isAdmin() {
+    return this.authService.checkIfAdminFromToken();
   }
 
   ngOnInit() {

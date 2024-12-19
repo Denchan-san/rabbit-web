@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Post } from '../models/post.model';
 import { PostService } from '../post.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { AuthService } from '../../../shared/auth/auth.service';
 
 @Component({
   selector: 'app-post-detail',
@@ -16,7 +17,8 @@ export class PostDetailComponent implements OnInit {
   constructor(
     private postService: PostService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -25,7 +27,7 @@ export class PostDetailComponent implements OnInit {
       this.threadId = +params['threadId'];
       this.post = this.postService.getPost(this.id);
 
-      if(!this.post) {
+      if (!this.post) {
         this.postService.fetchPost(this.threadId, this.id).subscribe(
           (fetchedPost) => {
             this.post = fetchedPost[0]; //wtf why its array?
@@ -39,8 +41,9 @@ export class PostDetailComponent implements OnInit {
   }
 
   isOwner(id: number) {
-    return true;
-    }
+    if (this.post.userId === this.authService.getUserIdFromToken()) return true;
+    return false;
+  }
 
   onUpdatePost() {
     this.router.navigate(['edit'], { relativeTo: this.route });
@@ -48,9 +51,11 @@ export class PostDetailComponent implements OnInit {
 
   onDeletePost() {
     this.postService.deletePost(this.id).subscribe();
-    this.router.navigate([`/threads/${this.threadId}`], { relativeTo: this.route}).then(() => {
-      window.location.reload();
-    });;
+    this.router
+      .navigate([`/threads/${this.threadId}`], { relativeTo: this.route })
+      .then(() => {
+        window.location.reload();
+      });
   }
 
   getTimeAgo(createdDate: string): string {
@@ -62,8 +67,10 @@ export class PostDetailComponent implements OnInit {
     const diffDays = Math.floor(diffHours / 24);
 
     if (diffMinutes < 1) return 'just now';
-    if (diffMinutes < 60) return `${diffMinutes} minute${diffMinutes > 1 ? 's' : ''} ago`;
-    if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+    if (diffMinutes < 60)
+      return `${diffMinutes} minute${diffMinutes > 1 ? 's' : ''} ago`;
+    if (diffHours < 24)
+      return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
     return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
   }
 }

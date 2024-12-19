@@ -17,6 +17,13 @@
       placeholder="Write your commentary..."
       [(ngModel)]="newCommentaryContent"
     />
-    <button class="btn btn-success" (click)="onPostCommentary()">Submit</button>
+    <button 
+    class="btn btn-success" 
+    (click)="onPostCommentary()" 
+    [disabled]="!isLoggedIn" 
+    title="You must be logged in to post">
+    Submit
+  </button>
+
   </div>
 </div>

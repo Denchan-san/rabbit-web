@@ -1,1 +1,72 @@
-<p>user-profile works!</p>
+<div class="profile-page">
+    <div class="banner">
+      <h1>Welcome, {{ user?.username }}!</h1>
+      <p>Your personalized luxury dashboard</p>
+    </div>
+  
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" *ngIf="editMode">
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="Enter Email"
+          class="form-control"
+        />
+        <small class="text-danger" *ngIf="profileForm.get('email')?.invalid">
+          Please enter a valid email.
+        </small>
+      </div>
+  
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password">New Password</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="Enter New Password"
+          class="form-control"
+        />
+      </div>
+  
+      <!-- Image Upload -->
+      <div class="form-group">
+        <label for="image">Profile Image</label>
+        <input type="file" id="image" (change)="onFileSelected($event)" class="form-control" />
+      </div>
+  
+      <!-- Submit and Cancel Buttons -->
+      <button class="btn btn-success" type="submit" [disabled]="profileForm.invalid">
+        Save Changes
+      </button>
+      <button class="btn btn-danger" type="button" (click)="toggleEditMode()">Cancel</button>
+    </form>
+  
+    <!-- Non-Editable Mode -->
+    <div *ngIf="!editMode">
+      <div class="profile-card">
+        <div class="profile-image">
+          <img
+            *ngIf="user?.image"
+            [src]="'data:image/png;base64,' + user.image"
+            alt="Profile Image"
+            class="image-rounded"
+          />
+          <div *ngIf="!user?.image" class="placeholder-icon">
+            {{ user?.username?.[0].toUpperCase() }}
+          </div>
+        </div>
+  
+        <div class="profile-details">
+          <h2>{{ user?.username }}</h2>
+          <p>Email: {{ user?.email }}</p>
+        </div>
+      </div>
+  
+      <button class="btn btn-primary" (click)="toggleEditMode()">Edit Profile</button>
+    </div>
+  </div>
+  

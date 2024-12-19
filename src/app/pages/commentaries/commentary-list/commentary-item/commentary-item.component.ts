@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Commentary } from '../../models/commentary.model';
 import { CommentaryService } from '../../commentary.service';
+import { AuthService } from '../../../../shared/auth/auth.service';
 
 @Component({
   selector: 'app-commentary-item',
@@ -18,7 +19,7 @@ export class CommentaryItemComponent implements OnInit {
   replyContent = '';
   editContent = '';
 
-  constructor(private commentaryService: CommentaryService) {}
+  constructor(private commentaryService: CommentaryService, private authService: AuthService) {}
 
   ngOnInit() {
     this.childCommentaries = this.allCommentaries.filter(
@@ -50,7 +51,6 @@ export class CommentaryItemComponent implements OnInit {
     return `${days} days ago`;
   }
 
-  // Reply to a commentary
   onReply() {
     this.replying = true;
     this.replyContent = '';
@@ -60,7 +60,7 @@ export class CommentaryItemComponent implements OnInit {
     const reply = {
       content: this.replyContent,
       postId: this.commentary.postId,
-      userId: 1, // TODO: user add
+      userId: this.authService.getUserIdFromToken(),
       commentaryToId: this.commentary.id,
     };
 
@@ -79,10 +79,16 @@ export class CommentaryItemComponent implements OnInit {
     this.replying = false;
   }
 
-  // Edit commentary
   onEdit() {
     this.editing = true;
     this.editContent = this.commentary.content;
+  }
+
+  
+  isOwner(id: number) {
+    if(this.authService.checkIfAdminFromToken()) return true;
+    if (this.commentary.userId === this.authService.getUserIdFromToken()) return true;
+    return false;
   }
 
   submitUpdate() {
