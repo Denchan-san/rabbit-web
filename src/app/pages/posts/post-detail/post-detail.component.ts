@@ -1,36 +1,45 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Post } from '../models/post.model';
 import { PostService } from '../post.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AuthService } from '../../../shared/auth/auth.service';
+import { UserProfileService } from '../../user-profile/user-profile.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-post-detail',
   templateUrl: './post-detail.component.html',
   styleUrl: './post-detail.component.css',
 })
-export class PostDetailComponent implements OnInit {
+export class PostDetailComponent implements OnInit, OnDestroy {
   post: Post;
   id: number;
   threadId: number;
+  authorName: string = 'Deleted user';
+  private fetchPostSub: Subscription;
 
   constructor(
     private postService: PostService,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private userProfileService: UserProfileService
   ) {}
 
   ngOnInit() {
-    this.route.params.subscribe((params: Params) => {
+    this.fetchPostSub = this.route.params.subscribe((params: Params) => {
       this.id = +params['id'];
       this.threadId = +params['threadId'];
       this.post = this.postService.getPost(this.id);
+      if(this.post) {
+        this.loadAuthorName();
+      }
 
       if (!this.post) {
         this.postService.fetchPost(this.threadId, this.id).subscribe(
           (fetchedPost) => {
-            this.post = fetchedPost[0]; //wtf why its array?
+            this.post = fetchedPost[0];
+            this.loadAuthorName();
           },
           (error) => {
             console.error('Failed to fetch post:', error);
@@ -41,12 +50,24 @@ export class PostDetailComponent implements OnInit {
   }
 
   isOwner(id: number) {
+    if (this.authService.checkIfAdminFromToken()) return true;
     if (this.post.userId === this.authService.getUserIdFromToken()) return true;
     return false;
   }
 
   onUpdatePost() {
     this.router.navigate(['edit'], { relativeTo: this.route });
+  }
+
+  loadAuthorName() {
+    this.userProfileService.fetchUser(this.post.userId).subscribe(
+      (user) => {
+        this.authorName = user.username;
+      },
+      (error) => {
+        console.error('Error fetching user details', error);
+      }
+    );
   }
 
   onDeletePost() {
@@ -72,5 +93,9 @@ export class PostDetailComponent implements OnInit {
     if (diffHours < 24)
       return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
     return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+  }
+
+  ngOnDestroy(): void {
+    this.fetchPostSub.unsubscribe();
   }
 }

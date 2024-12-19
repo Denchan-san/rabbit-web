@@ -3,8 +3,9 @@
   class="commentary-item border rounded p-3 mb-3"
   [style.backgroundColor]="depth % 2 === 0 ? '#f9f9f9' : '#ffffff'"
 >
-<!-- TODO: add good view of user  -->
-  <h6>Author ID: {{ commentary.userId }}</h6>
+  <!-- TODO: add good view of user  -->
+  <h6>Author: {{ authorName }}</h6>
+
   <div class="commentary-content">
     <h5>{{ commentary.content }}</h5>
     <small class="text-muted">{{ getTimestampLabel() }}</small>
@@ -15,10 +16,18 @@
     <button class="btn btn-sm btn-outline-primary me-2" (click)="onReply()">
       Reply
     </button>
-    <button *ngIf="isOwner(commentary?.userId)" class="btn btn-sm btn-outline-warning me-2" (click)="onEdit()">
+    <button
+      *ngIf="isOwner(commentary?.userId)"
+      class="btn btn-sm btn-outline-warning me-2"
+      (click)="onEdit()"
+    >
       Edit
     </button>
-    <button *ngIf="isOwner(commentary?.userId)" class="btn btn-sm btn-outline-danger" (click)="onDelete()">
+    <button
+      *ngIf="isOwner(commentary?.userId)"
+      class="btn btn-sm btn-outline-danger"
+      (click)="onDelete()"
+    >
       Delete
     </button>
   </div>

@@ -6,7 +6,7 @@
       <div class="post-detail">
         <h2 class="post-title">{{ post?.title }}</h2>
         <p class="post-meta text-muted">
-          Posted {{ getTimeAgo(post?.createdDate) }} by user with id : {{ post?.userId }}
+          Posted {{ getTimeAgo(post?.createdDate) }} by {{authorName}}
         </p>
         <p class="post-description">{{ post?.description }}</p>
       </div>

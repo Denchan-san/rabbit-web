@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Commentary } from '../../models/commentary.model';
 import { CommentaryService } from '../../commentary.service';
 import { AuthService } from '../../../../shared/auth/auth.service';
+import { UserProfileService } from '../../../user-profile/user-profile.service';
 
 @Component({
   selector: 'app-commentary-item',
@@ -18,12 +19,30 @@ export class CommentaryItemComponent implements OnInit {
   editing = false;
   replyContent = '';
   editContent = '';
+  authorName: string = 'Deleted user'; // Placeholder until fetched
 
-  constructor(private commentaryService: CommentaryService, private authService: AuthService) {}
+  constructor(
+    private commentaryService: CommentaryService,
+    private authService: AuthService,
+    private userProfileService: UserProfileService
+  ) {}
 
   ngOnInit() {
     this.childCommentaries = this.allCommentaries.filter(
       (reply) => reply.commentaryToId === this.commentary.id
+    );
+
+    this.loadAuthorName();
+  }
+
+  loadAuthorName() {
+    this.userProfileService.fetchUser(this.commentary.userId).subscribe(
+      (user) => {
+        this.authorName = user.username;
+      },
+      (error) => {
+        console.error('Error fetching user details', error);
+      }
     );
   }
 
@@ -35,7 +54,6 @@ export class CommentaryItemComponent implements OnInit {
     }
     return postedTime;
   }
-  
 
   getTimeAgo(dateString: string): string {
     const date = new Date(dateString);
@@ -84,9 +102,8 @@ export class CommentaryItemComponent implements OnInit {
     this.editContent = this.commentary.content;
   }
 
-  
   isOwner(id: number) {
-    if(this.authService.checkIfAdminFromToken()) return true;
+    if (this.authService.checkIfAdminFromToken()) return true;
     if (this.commentary.userId === this.authService.getUserIdFromToken()) return true;
     return false;
   }
@@ -107,7 +124,6 @@ export class CommentaryItemComponent implements OnInit {
     this.editing = false;
   }
 
-  // Delete commentary
   onDelete() {
     this.commentaryService.deleteCommentary(this.commentary.id).subscribe(
       () => {
